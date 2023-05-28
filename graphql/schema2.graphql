@@ -1,0 +1,170 @@
+"""----------Assignments----------"""
+type Assignment @aws_cognito_user_pools {
+	id: ID!
+	task: Task
+	door: Door
+	index: Int
+	completed: Boolean
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+input CreateAssignmentInput {
+	id: ID
+	task: Task!
+	door: Door!
+	index: Int!
+	completed: Boolean!
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+input UpdateAssignmentInput {
+	id: ID!
+	task: Task
+	door: Door
+	index: Int
+	completed: Boolean
+}
+input DeleteAssignmentInput {
+	id: ID!
+}
+
+"""----------Doors----------"""
+type Door {
+	id: ID!
+	address: String!
+	residents: [Resident!]!
+	latitude: Float
+	longitude: Float
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+input CreateDoorInput {
+	id: ID
+	address: String!
+	residents: [Resident!]!
+	latitude: Float
+	longitude: Float
+}
+input UpdateDoorInput {
+	id: ID!
+	address: String
+	residents: [Resident!]
+	latitude: Float
+	longitude: Float
+}
+input DeleteDoorInput {
+	id: ID!
+}
+
+"""----------Routes----------"""
+type Route {
+	id: ID!
+	name: String!
+	assignments: [Assignment]!
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+	volunteerRoutesId: ID
+}
+input CreateRouteInput {
+	id: ID
+	name: String!
+	volunteerRoutesId: ID
+}
+input UpdateRouteInput {
+	id: ID!
+	name: String
+	volunteerRoutesId: ID
+}
+input DeleteRouteInput {
+	id: ID!
+}
+
+"""----------Residents----------"""
+type Resident {
+	name: String
+	party: String
+}
+input ResidentInput {
+	name: String
+	party: String
+}
+input CreateResidentInput {
+	name: String
+	party: String
+	id: ID
+}
+input UpdateResidentInput {
+	id: ID!
+	name: String
+	volunteerResidentsId: ID
+}
+input DeleteResidentInput {
+	id: ID!
+}
+
+"""----------Volunteers----------"""
+type Volunteer {
+	id: ID!
+	campaign_id: String!
+	routes(
+		filter: ModelRouteFilterInput,
+		sortDirection: ModelSortDirection,
+		limit: Int,
+		nextToken: String
+	): ModelRouteConnection
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+input CreateVolunteerInput {
+	id: ID
+	campaign_id: String!
+}
+input UpdateVolunteerInput {
+	id: ID!
+	campaign_id: String
+}
+input DeleteVolunteerInput {
+	id: ID!
+}
+
+
+type Mutation {
+	createAssignment(input: CreateAssignmentInput!): Assignment
+	updateAssignment(input: UpdateAssignmentInput!): Assignment
+	deleteAssignment(input: DeleteAssignmentInput!): Assignment
+	createCampaign(input: CreateCampaignInput!): Campaign
+	updateCampaign(input: UpdateCampaignInput!): Campaign
+	deleteCampaign(input: DeleteCampaignInput!): Campaign
+	createDoor(input: CreateDoorInput!): Door
+	updateDoor(input: UpdateDoorInput!): Door
+	deleteDoor(input: DeleteDoorInput!): Door
+	createResident(input: CreateResidentInput!): Resident
+	updateResident(input: UpdateResidentInput!): Resident
+	deleteResident(input: DeleteResidentInput!): Resident
+	createRoute(input: CreateRouteInput!): Route
+	updateRoute(input: UpdateRouteInput!): Route
+	deleteRoute(input: DeleteRouteInput!): Route
+	createTask(input: CreateTaskInput!): Task
+	updateTask(input: UpdateTaskInput!): Task
+	deleteTask(input: DeleteTaskInput!): Task
+	createVolunteer(input: CreateVolunteerInput!): Volunteer
+	updateVolunteer(input: UpdateVolunteerInput!): Volunteer
+	deleteVolunteer(input: DeleteVolunteerInput!): Volunteer
+}
+
+type Query {
+	getAssignment(id: ID!): Assignment
+	listAssignment(limit: Int, nextToken: String): [Assignment]
+	getCampaign(id: ID!): Campaign
+	listCampaign(limit: Int, nextToken: String): [Campaign]
+	getDoor(id: ID!): Door
+	listDoor(limit: Int, nextToken: String): [Door]
+	getResident(id: ID!): Resident
+	listResident(limit: Int, nextToken: String): [Resident]
+	getRoute(id: ID!): Route
+	listRoute(limit: Int, nextToken: String): [Route]
+	getTask(id: ID!): Task
+	listTask(limit: Int, nextToken: String): [Task]
+	getVolunteer(id: ID!): Volunteer
+	listVolunteer(limit: Int, nextToken: String): [Volunteer]
+	}
