@@ -29,9 +29,12 @@ export class TestCdkStack extends cdk.Stack {
       }
     })
 
-    const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
-      userPool
-    })
+    const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
+      userPool,
+      authFlows: {
+        userPassword: true
+      }
+    });
 
     const api = new appsync.GraphqlApi(this, 'Api', {
       name: 'direct-campaign-graphqlapi',

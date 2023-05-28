@@ -1,0 +1,465 @@
+"""----------Assignments----------"""
+type Assignment {
+	id: ID!
+	index: Int!
+	completed: Boolean!
+	door: Door!
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+	routeAssignmentsId: ID!
+	assignmentDoorId: ID!
+}
+input CreateAssignmentInput {
+	id: ID
+	index: Int!
+	completed: Boolean!
+	routeAssignmentsId: ID!
+	assignmentDoorId: ID!
+}
+input UpdateAssignmentInput {
+	id: ID!
+	index: Int
+	completed: Boolean
+	routeAssignmentsId: ID
+	assignmentDoorId: ID
+}
+input DeleteAssignmentInput {
+	id: ID!
+}
+type ModelAssignmentConnection {
+	items: [Assignment]!
+	nextToken: String
+}
+input ModelAssignmentConditionInput {
+	index: ModelIntInput
+	completed: ModelBooleanInput
+	and: [ModelAssignmentConditionInput]
+	or: [ModelAssignmentConditionInput]
+	not: ModelAssignmentConditionInput
+	routeAssignmentsId: ModelIDInput
+	assignmentDoorId: ModelIDInput
+}
+input ModelAssignmentFilterInput {
+	id: ModelIDInput
+	index: ModelIntInput
+	completed: ModelBooleanInput
+	and: [ModelAssignmentFilterInput]
+	or: [ModelAssignmentFilterInput]
+	not: ModelAssignmentFilterInput
+	routeAssignmentsId: ModelIDInput
+	assignmentDoorId: ModelIDInput
+}
+input ModelSubscriptionAssignmentFilterInput {
+	id: ModelSubscriptionIDInput
+	index: ModelSubscriptionIntInput
+	completed: ModelSubscriptionBooleanInput
+	and: [ModelSubscriptionAssignmentFilterInput]
+	or: [ModelSubscriptionAssignmentFilterInput]
+}
+
+"""----------Doors----------"""
+type Door {
+	id: ID!
+	address: String!
+	residents: [Resident!]!
+	latitude: Float
+	longitude: Float
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+input CreateDoorInput {
+	id: ID
+	address: String!
+	residents: [ResidentInput!]!
+	latitude: Float
+	longitude: Float
+}
+input UpdateDoorInput {
+	id: ID!
+	address: String
+	residents: [ResidentInput!]
+	latitude: Float
+	longitude: Float
+}
+input DeleteDoorInput {
+	id: ID!
+}
+type ModelDoorConnection {
+	items: [Door]!
+	nextToken: String
+}
+input ModelDoorConditionInput {
+	address: ModelStringInput
+	latitude: ModelFloatInput
+	longitude: ModelFloatInput
+	and: [ModelDoorConditionInput]
+	or: [ModelDoorConditionInput]
+	not: ModelDoorConditionInput
+}
+input ModelDoorFilterInput {
+	id: ModelIDInput
+	address: ModelStringInput
+	latitude: ModelFloatInput
+	longitude: ModelFloatInput
+	and: [ModelDoorFilterInput]
+	or: [ModelDoorFilterInput]
+	not: ModelDoorFilterInput
+}
+input ModelSubscriptionDoorFilterInput {
+	id: ModelSubscriptionIDInput
+	address: ModelSubscriptionStringInput
+	latitude: ModelSubscriptionFloatInput
+	longitude: ModelSubscriptionFloatInput
+	and: [ModelSubscriptionDoorFilterInput]
+	or: [ModelSubscriptionDoorFilterInput]
+}
+
+"""----------Routes----------"""
+type Route {
+	id: ID!
+	name: String!
+	assignments(
+		filter: ModelAssignmentFilterInput,
+		sortDirection: ModelSortDirection,
+		limit: Int,
+		nextToken: String
+	): ModelAssignmentConnection
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+	volunteerRoutesId: ID
+}
+input CreateRouteInput {
+	id: ID
+	name: String!
+	volunteerRoutesId: ID
+}
+input UpdateRouteInput {
+	id: ID!
+	name: String
+	volunteerRoutesId: ID
+}
+input DeleteRouteInput {
+	id: ID!
+}
+type ModelRouteConnection {
+	items: [Route]!
+	nextToken: String
+}
+input ModelRouteConditionInput {
+	name: ModelStringInput
+	and: [ModelRouteConditionInput]
+	or: [ModelRouteConditionInput]
+	not: ModelRouteConditionInput
+	volunteerRoutesId: ModelIDInput
+}
+input ModelRouteFilterInput {
+	id: ModelIDInput
+	name: ModelStringInput
+	and: [ModelRouteFilterInput]
+	or: [ModelRouteFilterInput]
+	not: ModelRouteFilterInput
+	volunteerRoutesId: ModelIDInput
+}
+input ModelSubscriptionRouteFilterInput {
+	id: ModelSubscriptionIDInput
+	name: ModelSubscriptionStringInput
+	and: [ModelSubscriptionRouteFilterInput]
+	or: [ModelSubscriptionRouteFilterInput]
+}
+
+"""----------Residents----------"""
+type Resident {
+	name: String
+	party: String
+}
+input ResidentInput {
+	name: String
+	party: String
+}
+input CreateResidentInput {
+	name: String
+	party: String
+	id: ID
+}
+input UpdateResidentInput {
+	id: ID!
+	name: String
+	volunteerResidentsId: ID
+}
+input DeleteResidentInput {
+	id: ID!
+}
+type ModelResidentConnection {
+	items: [Resident]!
+	nextToken: String
+}
+input ModelResidentConditionInput {
+	name: ModelStringInput
+	and: [ModelResidentConditionInput]
+	or: [ModelResidentConditionInput]
+	not: ModelResidentConditionInput
+	volunteerResidentsId: ModelIDInput
+}
+input ModelResidentFilterInput {
+	id: ModelIDInput
+	name: ModelStringInput
+	and: [ModelResidentFilterInput]
+	or: [ModelResidentFilterInput]
+	not: ModelResidentFilterInput
+	volunteerResidentsId: ModelIDInput
+}
+input ModelSubscriptionResidentFilterInput {
+	id: ModelSubscriptionIDInput
+	name: ModelSubscriptionStringInput
+	and: [ModelSubscriptionResidentFilterInput]
+	or: [ModelSubscriptionResidentFilterInput]
+}
+
+"""----------Volunteers----------"""
+type Volunteer {
+	id: ID!
+	campaign_id: String!
+	routes(
+		filter: ModelRouteFilterInput,
+		sortDirection: ModelSortDirection,
+		limit: Int,
+		nextToken: String
+	): ModelRouteConnection
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+input CreateVolunteerInput {
+	id: ID
+	campaign_id: String!
+}
+input UpdateVolunteerInput {
+	id: ID!
+	campaign_id: String
+}
+input DeleteVolunteerInput {
+	id: ID!
+}
+type ModelVolunteerConnection {
+	items: [Volunteer]!
+	nextToken: String
+}
+input ModelVolunteerConditionInput {
+	campaign_id: ModelStringInput
+	and: [ModelVolunteerConditionInput]
+	or: [ModelVolunteerConditionInput]
+	not: ModelVolunteerConditionInput
+}
+input ModelVolunteerFilterInput {
+	id: ModelIDInput
+	campaign_id: ModelStringInput
+	and: [ModelVolunteerFilterInput]
+	or: [ModelVolunteerFilterInput]
+	not: ModelVolunteerFilterInput
+}
+input ModelSubscriptionVolunteerFilterInput {
+	id: ModelSubscriptionIDInput
+	campaign_id: ModelSubscriptionStringInput
+	and: [ModelSubscriptionVolunteerFilterInput]
+	or: [ModelSubscriptionVolunteerFilterInput]
+}
+
+
+
+
+""" MODELS """
+enum ModelAttributeTypes {
+	binary
+	binarySet
+	bool
+	list
+	map
+	number
+	numberSet
+	string
+	stringSet
+	_null
+}
+input ModelBooleanInput {
+	ne: Boolean
+	eq: Boolean
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+}
+input ModelSubscriptionBooleanInput {
+	ne: Boolean
+	eq: Boolean
+}
+input ModelFloatInput {
+	ne: Float
+	eq: Float
+	le: Float
+	lt: Float
+	ge: Float
+	gt: Float
+	between: [Float]
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+}
+input ModelIDInput {
+	ne: ID
+	eq: ID
+	le: ID
+	lt: ID
+	ge: ID
+	gt: ID
+	contains: ID
+	notContains: ID
+	between: [ID]
+	beginsWith: ID
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+	size: ModelSizeInput
+}
+input ModelIntInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	between: [Int]
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+}
+input ModelSizeInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	between: [Int]
+}
+enum ModelSortDirection {
+	ASC
+	DESC
+}
+input ModelStringInput {
+	ne: String
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	contains: String
+	notContains: String
+	between: [String]
+	beginsWith: String
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+	size: ModelSizeInput
+}
+input ModelSubscriptionFloatInput {
+	ne: Float
+	eq: Float
+	le: Float
+	lt: Float
+	ge: Float
+	gt: Float
+	between: [Float]
+	in: [Float]
+	notIn: [Float]
+}
+input ModelSubscriptionIDInput {
+	ne: ID
+	eq: ID
+	le: ID
+	lt: ID
+	ge: ID
+	gt: ID
+	contains: ID
+	notContains: ID
+	between: [ID]
+	beginsWith: ID
+	in: [ID]
+	notIn: [ID]
+}
+input ModelSubscriptionIntInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	between: [Int]
+	in: [Int]
+	notIn: [Int]
+}
+
+input ModelSubscriptionStringInput {
+	ne: String
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	contains: String
+	notContains: String
+	between: [String]
+	beginsWith: String
+	in: [String]
+	notIn: [String]
+}
+
+
+
+
+type Mutation {
+	createVolunteer(input: CreateVolunteerInput!, condition: ModelVolunteerConditionInput): Volunteer
+	updateVolunteer(input: UpdateVolunteerInput!, condition: ModelVolunteerConditionInput): Volunteer
+	deleteVolunteer(input: DeleteVolunteerInput!, condition: ModelVolunteerConditionInput): Volunteer
+	createRoute(input: CreateRouteInput!, condition: ModelRouteConditionInput): Route
+	updateRoute(input: UpdateRouteInput!, condition: ModelRouteConditionInput): Route
+	deleteRoute(input: DeleteRouteInput!, condition: ModelRouteConditionInput): Route
+	createAssignment(input: CreateAssignmentInput!, condition: ModelAssignmentConditionInput): Assignment
+	updateAssignment(input: UpdateAssignmentInput!, condition: ModelAssignmentConditionInput): Assignment
+	deleteAssignment(input: DeleteAssignmentInput!, condition: ModelAssignmentConditionInput): Assignment
+	createDoor(input: CreateDoorInput!, condition: ModelDoorConditionInput): Door
+	updateDoor(input: UpdateDoorInput!, condition: ModelDoorConditionInput): Door
+	deleteDoor(input: DeleteDoorInput!, condition: ModelDoorConditionInput): Door
+}
+
+type Query {
+	getVolunteer(id: ID!): Volunteer
+	listVolunteers(filter: ModelVolunteerFilterInput, limit: Int, nextToken: String): ModelVolunteerConnection
+	getRoute(id: ID!): Route
+	listRoutes(filter: ModelRouteFilterInput, limit: Int, nextToken: String): ModelRouteConnection
+	getAssignment(id: ID!): Assignment
+	listAssignments(filter: ModelAssignmentFilterInput, limit: Int, nextToken: String): ModelAssignmentConnection
+	getDoor(id: ID!): Door
+	listDoors(filter: ModelDoorFilterInput, limit: Int, nextToken: String): ModelDoorConnection
+}
+
+
+
+type Subscription {
+	onCreateVolunteer(filter: ModelSubscriptionVolunteerFilterInput): Volunteer
+		@aws_subscribe(mutations: ["createVolunteer"])
+	onUpdateVolunteer(filter: ModelSubscriptionVolunteerFilterInput): Volunteer
+		@aws_subscribe(mutations: ["updateVolunteer"])
+	onDeleteVolunteer(filter: ModelSubscriptionVolunteerFilterInput): Volunteer
+		@aws_subscribe(mutations: ["deleteVolunteer"])
+	onCreateRoute(filter: ModelSubscriptionRouteFilterInput): Route
+		@aws_subscribe(mutations: ["createRoute"])
+	onUpdateRoute(filter: ModelSubscriptionRouteFilterInput): Route
+		@aws_subscribe(mutations: ["updateRoute"])
+	onDeleteRoute(filter: ModelSubscriptionRouteFilterInput): Route
+		@aws_subscribe(mutations: ["deleteRoute"])
+	onCreateAssignment(filter: ModelSubscriptionAssignmentFilterInput): Assignment
+		@aws_subscribe(mutations: ["createAssignment"])
+	onUpdateAssignment(filter: ModelSubscriptionAssignmentFilterInput): Assignment
+		@aws_subscribe(mutations: ["updateAssignment"])
+	onDeleteAssignment(filter: ModelSubscriptionAssignmentFilterInput): Assignment
+		@aws_subscribe(mutations: ["deleteAssignment"])
+	onCreateDoor(filter: ModelSubscriptionDoorFilterInput): Door
+		@aws_subscribe(mutations: ["createDoor"])
+	onUpdateDoor(filter: ModelSubscriptionDoorFilterInput): Door
+		@aws_subscribe(mutations: ["updateDoor"])
+	onDeleteDoor(filter: ModelSubscriptionDoorFilterInput): Door
+		@aws_subscribe(mutations: ["deleteDoor"])
+}
